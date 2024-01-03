@@ -1,3 +1,5 @@
+echo -e "\e[33mInstalling Nginx Server\e[0m"
+
 dnf install nginx -y
 
 rm -rf /usr/share/nginx/html/*
