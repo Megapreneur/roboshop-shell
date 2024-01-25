@@ -22,6 +22,6 @@ systemctl start shipping &>>/tmp/roboshop.log
 echo -e "\e[33mInstall MySql Client\e[0m"
 dnf install mysql -y &>>/tmp/roboshop.log
 echo -e "\e[33mLoad Schema\e[0m"
-mysql -h mysql-dev.lanim.shop -uroot -pRoboShop@1 < /app/schema/shipping.sql &>>/tmp/roboshop.log
+mysql -h mysql-dev.lanim.shop -uroot -pRoboShop@1 </app/schema/shipping.sql &>>/tmp/roboshop.log
 echo -e "\e[33mRestart Shipping Service\e[0m"
 systemctl restart shipping &>>/tmp/roboshop.log
