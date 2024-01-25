@@ -13,7 +13,6 @@ cd /app &>>/tmp/roboshop.log
 echo -e "\e[33mClean Package\e[0m"
 mvn clean package &>>/tmp/roboshop.log
 mv target/shipping-1.0.jar shipping.jar &>>/tmp/roboshop.log
-
 echo -e "\e[33mSetup Shipping Service\e[0m"
 cp /root/roboshop-shell/shipping.service /etc/systemd/system/shipping.service &>>/tmp/roboshop.log
 echo -e "\e[33mStart Shipping Service\e[0m"
