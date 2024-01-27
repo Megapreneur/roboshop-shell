@@ -1,41 +1,46 @@
-echo -e "\e[33mConfiguring NodeJS\e[0m"
+component=$component
+color="${color}"
+nocolor=" ${nocolor}"
+
+
+echo -e "${color}Configuring NodeJS ${nocolor}"
 dnf module disable nodejs -y &>>/tmp/roboshop.log
 dnf module enable nodejs:18 -y &>>/tmp/roboshop.log
 
-echo -e "\e[33mInstalling NodeJS\e[0m"
+echo -e "${color}Installing NodeJS ${nocolor}"
 dnf install nodejs -y &>>/tmp/roboshop.log
 
-echo -e "\e[33mAdd Application User\e[0m"
+echo -e "${color}Add Application User ${nocolor}"
 useradd roboshop &>>/tmp/roboshop.log
 
-echo -e "\e[33mCreate Application Directory\e[0m"
+echo -e "${color}Create Application Directory ${nocolor}"
 rm -rf /app &>>/tmp/roboshop.log
 mkdir /app &>>/tmp/roboshop.log
 
-echo -e "\e[33mDownloading Application Content\e[0m"
-curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip &>>/tmp/roboshop.log
+echo -e "${color}Downloading Application Content ${nocolor}"
+curl -o /tmp/$component.zip https://roboshop-artifacts.s3.amazonaws.com/$component.zip &>>/tmp/roboshop.log
 cd /app
 
-echo -e "\e[33mExtract Application Content\e[0m"
-unzip /tmp/catalogue.zip &>>/tmp/roboshop.log
+echo -e "${color}Extract Application Content ${nocolor}"
+unzip /tmp/$component.zip &>>/tmp/roboshop.log
 cd /app
 
-echo -e "\e[33mInstalling NodeJS Dependencies\e[0m"
+echo -e "${color}Installing NodeJS Dependencies ${nocolor}"
 npm install &>>/tmp/roboshop.log
 
-echo -e "\e[33mSetup SystemD Service\e[0m"
-cp /root/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service &>>/tmp/roboshop.log
+echo -e "${color}Setup SystemD Service ${nocolor}"
+cp /root/roboshop-shell/$component.service /etc/systemd/system/$component.service &>>/tmp/roboshop.log
 
-echo -e "\e[33mStart Catalogue Service\e[0m"
+echo -e "${color}Start Catalogue Service ${nocolor}"
 systemctl daemon-reload &>>/tmp/roboshop.log
-systemctl enable catalogue &>>/tmp/roboshop.log
-systemctl start catalogue &>>/tmp/roboshop.log
+systemctl enable $component &>>/tmp/roboshop.log
+systemctl start $component &>>/tmp/roboshop.log
 
-echo -e "\e[33mCopy MongoDB Repo File\e[0m"
+echo -e "${color}Copy MongoDB Repo File ${nocolor}"
 cp /root/roboshop-shell/mongodb.repo /etc/yum.repos.d/mongodb.repo &>>/tmp/roboshop.log
 
-echo -e "\e[33mInstall MongoDB Client\e[0m"
+echo -e "${color}Install MongoDB Client ${nocolor}"
 dnf install mongodb-org-shell -y &>>/tmp/roboshop.log
 
-echo -e "\e[33mLoad Schema\e[0m"
-mongo --host mongodb-dev.lanim.shop </app/schema/catalogue.js &>>/tmp/roboshop.log
+echo -e "${color}Load Schema ${nocolor}"
+mongo --host mongodb-dev.lanim.shop </app/schema/$component.js &>>/tmp/roboshop.log
