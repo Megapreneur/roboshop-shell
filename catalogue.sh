@@ -1,6 +1,6 @@
-component=$component
-color="${color}"
-nocolor=" ${nocolor}"
+component=$catalogue
+color="\e[33m"
+nocolor="\e[0m"
 
 
 echo -e "${color}Configuring NodeJS ${nocolor}"
