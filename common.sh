@@ -5,6 +5,14 @@ app_path="/app"
 success="\e[32m"
 failure="\e[31m"
 
+stat_check(){
+  if [ $? -eq 0 ]; then
+      echo -e "${success}SUCCESS${nocolor}"
+    else
+      echo -e "${failure}FAILURE${nocolor}"
+    fi
+}
+
 
 nodejs(){
   echo -e "${color}Configuring NodeJS ${nocolor}"
