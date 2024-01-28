@@ -21,6 +21,7 @@ if [ $? -eq 0 ]; then
   fi
 
 echo -e "${color}Create Application Directory${nocolor}"
+rm -rf ${app_path} &>>${log_file}
 mkdir ${app_path} &>>${log_file}
 if [ $? -eq 0 ]; then
     echo SUCCESS
