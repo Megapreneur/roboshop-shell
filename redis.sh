@@ -1,3 +1,5 @@
+source common.sh
+
 echo -e "\e[33m Install Redis Repos\e[0m"
 dnf install https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y &>>/tmp/roboshop.log
 
