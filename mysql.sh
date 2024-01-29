@@ -1,16 +1,24 @@
-echo -e "\e[33m Disable MySQL Default Version\e[0m"
-dnf module disable mysql -y &>>/tmp/roboshop.log
+source common.sh
+component=mysql
 
-echo -e "\e[33mCopy MySql Repo File\e[0m"
-cp /root/roboshop-shell/mysql.repo /etc/yum.repos.d/mysql.repo &>>/tmp/roboshop.log
+echo -e "${color} Disable MySQL Default Version${nocolor}"
+dnf module disable mysql -y &>>${log_file}
+stat_check $?
 
-echo -e "\e[33mInstall MySql Server\e[0m"
-yum install mysql-community-server -y &>>/tmp/roboshop.log
+echo -e "${color}Copy MySql Repo File${nocolor}"
+cp /root/roboshop-shell/$component.repo /etc/yum.repos.d/$component.repo &>>${log_file}
+stat_check $?
 
-echo -e "\e[33mStart MySql Server\e[0m"
-systemctl enable mysqld &>>/tmp/roboshop.log
-systemctl start mysqld &>>/tmp/roboshop.log
+echo -e "${color}Install MySql Server${nocolor}"
+yum install mysql-community-server -y &>>${log_file}
+stat_check $?
 
-echo -e "\e[33mChange MySql Password\e[0m"
-mysql_secure_installation --set-root-pass RoboShop@1 &>>/tmp/roboshop.log
+echo -e "${color}Start MySql Server${nocolor}"
+systemctl enable mysqld &>>${log_file}
+systemctl start mysqld &>>${log_file}
+stat_check $?
+
+echo -e "${color}Change MySql Password${nocolor}"
+mysql_secure_installation --set-root-pass $1 &>>${log_file}
+stat_check $?
 

@@ -1,36 +1,40 @@
+source common.sh
+component=payment
 
-echo -e "\e[33mInstall Python 3.6\e[0m"
-dnf install python36 gcc python3-devel -y &>>/tmp/roboshop.log
-echo $?
 
-echo -e "\e[33mAdd Application User\e[0m"
-useradd roboshop &>>/tmp/roboshop.log
-echo $?
+echo -e "${color}Install Python ${nocolor}"
+dnf install python36 gcc python3-devel -y &>>${log_file}
+stat_check $?
 
-echo -e "\e[33mCreate Application Directory\e[0m"
-mkdir /app &>>/tmp/roboshop.log
-echo $?
+echo -e "${color}Add Application User${nocolor}"
+add_user $?
+stat_check $?
 
-echo -e "\e[33mDownloading Application Content\e[0m"
-curl -L -o /tmp/payment.zip https://roboshop-artifacts.s3.amazonaws.com/payment.zip &>>/tmp/roboshop.log
-echo $?
 
-echo -e "\e[33mExtract Application Content\e[0m"
+echo -e "${color}Create Application Directory${nocolor}"
+mkdir /app &>>${log_file}
+stat_check $?
+
+echo -e "${color}Downloading Application Content${nocolor}"
+curl -L -o /tmp/$component.zip https://roboshop-artifacts.s3.amazonaws.com/$component.zip &>>${log_file}
+stat_check $?
+
+echo -e "${color}Extract Application Content${nocolor}"
 cd /app
-unzip /tmp/payment.zip &>>/tmp/roboshop.log
-cd /app &>>/tmp/roboshop.log
-echo $?
+unzip /tmp/$component.zip &>>${log_file}
+cd /app &>>${log_file}
+stat_check $?
 
-echo -e "\e[33mDownload Dependencies\e[0m"
-pip3.6 install -r requirements.txt &>>/tmp/roboshop.log
-echo $?
+echo -e "${color}Download Dependencies${nocolor}"
+pip3.6 install -r requirements.txt &>>${log_file}
+stat_check $?
 
-echo -e "\e[33mSetup Payment Service\e[0m"
-cp /root/roboshop-shell/payment.service /etc/systemd/system/payment.service &>>/tmp/roboshop.log
-echo $?
+echo -e "${color}Setup Payment Service${nocolor}"
+cp /root/roboshop-shell/$component.service /etc/systemd/system/$component.service &>>${log_file}
+stat_check $?
 
-echo -e "\e[33mStart Payment Service\e[0m"
-systemctl daemon-reload &>>/tmp/roboshop.log
-systemctl enable payment &>>/tmp/roboshop.log
-systemctl start payment &>>/tmp/roboshop.log
-echo $?
+echo -e "${color}Start Payment Service${nocolor}"
+systemctl daemon-reload &>>${log_file}
+systemctl enable $component &>>${log_file}
+systemctl start $component &>>${log_file}
+stat_check $?
